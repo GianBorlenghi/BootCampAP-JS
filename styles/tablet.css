@@ -29,3 +29,23 @@ input[type=search] {
 .form-container{
     margin-top:5vh;
 }
+ul{
+    position:relative;
+    display: block;
+    z-index: 100;
+    width: 40%;
+    gap:1rem;
+    text-align: center;
+    left:0;
+    top:66px;
+    background-color: #0A2647;
+
+}
+
+nav ul>li {
+    margin-left:0;    
+}
+
+.navbar-toggler{
+    margin-bottom:20px;
+}
