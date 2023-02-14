@@ -273,45 +273,18 @@ input[type=submit]:hover{
     height: 200px;
 }
 
-@media only screen and (max-width: 576px) {
-    header {
-        height: 15vh;
-    }
-
-    body {
-        height: 75vh;
-    }
-
-    footer {
-        height: 10vh;
-    }
-
-    footer div:nth-child(2) {
-        font-size: 20px;
-        margin-top: 0;
-        position:absolute;
-    }
-    input[type=checkbox]:nth-child(1){
-        margin-left:5px;
-    }
-    input[type=search] {
-        width: 200px;
-        padding: 0;
-        margin-left: 5px;
-    }
-
-    .flex-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    label {
-        margin-right: 35px;
-    }
-    .form-container{
-        margin-top:0;
-    }
-    .card-details{
-        margin:0px auto;
-    }
+thead tr{
+    background-color: #0A2647;
+    color:#fff;
+    text-align: left;
+    letter-spacing: 0.1rem;
+}
+thead{
+    border:2px solid #aaa;
+}
+table tbody tr>td{
+    
+    color: #fff;
+    font-style: italic;
+    letter-spacing: 0.2rem;
 }

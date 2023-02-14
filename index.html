@@ -5,9 +5,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <link rel="stylesheet" href="./styles/styles.css">
+    <link rel="stylesheet" href="./styles/styles.css">
+    <link rel="stylesheet" media="only screen and (min-width:320px) and (max-width:577px)" href="./styles/mobile.css">
+    <link rel="stylesheet" media="only screen and (min-width:576px) and (max-width:769px)" href="./styles/tablet.css">
+    <link rel="stylesheet" media="only screen and (min-width:769px) and (max-width:1476px)" href="./styles/tablet.css">
 
   <title>Home</title>
 </head>
@@ -16,7 +20,7 @@
   <header class=" sticky-top">
     <nav class="navbar navbar-expand-lg text-light ">
       <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
+        <button class="navbar-toggler bg-primary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
           aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -32,13 +36,13 @@
               <a class="nav-link link-light" href="./upcoming_events.html">Upcoming events</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link link-light" href="#">Past events</a>
+              <a class="nav-link link-light" href="./past_events.html">Past events</a>
             </li>
             <li class="nav-item">
               <a class="nav-link link-light" href="./contact.html">Contact</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link link-light" href="/stats.html">Stats</a>
+              <a class="nav-link link-light" href="./stats.html">Stats</a>
             </li>
 
           </ul>
@@ -53,7 +57,7 @@
           <div class="col">
             <h1>Home</h1>
           </div>
-          <div class="col"><a href="/upcoming_events.html">></a></div>
+          <div class="col"><a href="./upcoming_events.html">></a></div>
         </div>  
     </div>
         <div class="flex-container">
@@ -68,7 +72,7 @@
               </form>
         </div>
       <div class="row row-cols-1 row-cols-md-3 g-4" id="div-cards">
-        <!-- <div class="col">
+         <div class="col">
           <div class="card">
             <img src="./assets/Cinema.jpg" class="card-img-top" alt="...">
               <div class="card-body">
@@ -134,7 +138,7 @@
             <a href="#" class="btn">Ver más</a>
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
 
 
