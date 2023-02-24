@@ -2,6 +2,8 @@ const DIVCARDS = document.getElementById("div-cards")
 const D = document.getElementById('card-detail');
 const DIVCAS = document.getElementById('div-cards_past-events');
 const DIVCARDSFUTUREVEVENTS = document.getElementById('div-cards-future_events')
+const TABLE_PERCENTAGE = document.getElementById('tablePercentage');
+
 
 let currentDate = "2022-01-01";
 let currentDateFormat = Date.parse(currentDate);
@@ -182,6 +184,8 @@ let data = [
 
 const getAllCards = () => {
 
+
+
     for (let p of data) {
         let dateEvent = Date.parse(p.date)
         DIVCARDS.innerHTML += `
@@ -314,3 +318,5 @@ const getFutureEvents = () => {
                                    `;
         }
     }
+
+    
