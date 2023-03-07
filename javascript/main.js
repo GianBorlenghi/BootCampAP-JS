@@ -1,5 +1,5 @@
 const DIVCARDS = document.getElementById("div-cards")
-const D = document.getElementById('card-detail');
+const CARD_DETAILS = document.getElementById('card-detail');
 const DIV_CARDS_PAST_EVENTS = document.getElementById('div-cards_past-events');
 const DIV_CARDS_FUTURE_EVENTS = document.getElementById('div-cards-future_events')
 const TABLE_PERCENTAGE = document.getElementById('tablePercentage');
@@ -14,7 +14,8 @@ const INPUT_SEARCH_PAST = document.getElementById("inputSearch_past")
 const BUTTON_SEARCH_FUTURE = document.getElementById("search_future");
 const INPUT_SEARCH_FUTURE = document.getElementById("inputSearch_future")
 
-
+const FOOTER = document.querySelector("footer")
+const CHECKBOX_ARRAY = document.querySelectorAll("input[type=checkbox]");
 
 let currentDate = "2022-01-01";
 let currentDateFormat = Date.parse(currentDate);
@@ -202,14 +203,19 @@ function deleteRepeat(arr) {
 
 //-------------------------------------------------------------------------------------
 
+function arrayObjectWithouthRepeat(array) {
+    let set = new Set(array.map(JSON.stringify))
+    return Array.from(set).map(JSON.parse);
+}
 
+//-------------------------------------------------------------------------------------
 let checkBox = ''
 const addCheckBox = () => {
     let i = 0;
     let catArray = data.map(ev => ev.category);
     let catArrayWithoutRepeat = deleteRepeat(catArray);
     let div = document.createElement('div');
-
+    div.classList.add("flex-checkbox")
     catArrayWithoutRepeat.forEach(ev => (i += 1, checkBox +=
         `
         <input type="checkbox" name="${ev}" id="check${i}" ><label for="check${i}">${ev}</label>
@@ -224,7 +230,14 @@ const addCheckBox = () => {
 //-------------------------------------------------------------------------------------
 
 let allCards = '';
+
+
+let ar = [];
+let nAr = [];
+let arrayCategoryFilter = [];
 const getAllCards = () => {
+
+
     for (let p of data) {
         let dateEvent = Date.parse(p.date)
         allCards += `
@@ -235,7 +248,7 @@ const getAllCards = () => {
                             <h5 class="card-title">${p.name}</h5>
                             <p class="card-text">${p.description}</p>      
                             <h6>Price: $ ${p.price}</h6>
-                            <a href="./details.html" target="_blank" onclick="getDetails(${data.indexOf(p)})" class="btn">Ver más</a>
+                            <a target="_blank" href="./details.html" onclick="getDetails(${p._id})" class="btn">Ver más</a>
                         </div>
                     </div>
                 </div>
@@ -244,41 +257,53 @@ const getAllCards = () => {
 
     DIVCARDS.innerHTML = allCards;
 
-    let check = FLEX_CONTAINER_CHECKBOX.children[0].childNodes;
-    let arrayCategoryFilter;
-    FLEX_CONTAINER_CHECKBOX.children[0].addEventListener("click", () => {
-        let i = 1;
-        allCards = '';
+    allCards = '';
+    let CHECKBOX_ARRAY = document.querySelectorAll("input[type=checkbox]");
+    let acum = 0;
 
+    let check = FLEX_CONTAINER_CHECKBOX.children[0].childNodes;
+
+    FLEX_CONTAINER_CHECKBOX.children[0].addEventListener("change", () => {
+        let i = 1;
+        let searchFilterByCategory = [];
         acum = 0;
+        allCards = '';
+        ar.concat(arrayCategoryFilter);
         while (i < check.length) {
             if (check[i].checked) {
                 arrayCategoryFilter = data.filter(ev => (ev.category.toLowerCase() == check[i].name.toLowerCase()));
                 arrayCategoryFilter.forEach(ev =>
                     allCards += `
-            <div class="col">
-            <div class="card">
-            <img src="${ev.image}" class="card-img-top" alt="...">
-            <div class="card-body">
-            <h5 class="card-title">${ev.name}</h5>
-            <p class="card-text">${ev.description}o</p>      
-            <h6>Price: $ ${ev.price}</h6>
-            <a href="./details.html" target="_blank" onclick="getDetails(${data.indexOf(ev)})" class="btn">Ver más</a>
-            </div>
-            </div>
-            </div>
-            `)
+                                <div class="col">
+                                    <div class="card">
+                                        <img src="${ev.image}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${ev.name}</h5>
+                                            <p class="card-text">${ev.description}o</p>      
+                                            <h6>Price: $ ${ev.price}</h6>
+                                            <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                `)
+                let k = 0;
+                while (k < arrayCategoryFilter.length) {
 
-
-
+                    ar.push(arrayCategoryFilter[k]);
+                    k += 1;
+                }
                 DIVCARDS.innerHTML = allCards;
 
+                nAr = arrayObjectWithouthRepeat(ar);
+
                 BUTTON_SEARCH.addEventListener("click", (e) => {
+                 
                     let searchText = INPUT_SEARCH.value.toLowerCase();
-                    let searchFilterByCategory =
-                        arrayCategoryFilter.filter(
+                    searchFilterByCategory =
+                        nAr.filter(
                             card => (card.name.toLowerCase().includes(searchText) || (card.description.toLowerCase().includes(searchText)))
                         )
+
 
                     allCards = '';
 
@@ -292,28 +317,29 @@ const getAllCards = () => {
                                     <h5 class="card-title">${ev.name}</h5>
                                     <p class="card-text">${ev.description}o</p>      
                                     <h6>Price: $ ${ev.price}</h6>
-                                    <a href="./details.html" target="_blank" onclick="getDetails(${data.indexOf(ev)})" class="btn">Ver más</a>
+                                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
                                 </div>
                             </div>
                         </div>
                 `))
 
                         DIVCARDS.innerHTML = allCards;
+
                         event.preventDefault();
                     } else {
-                        DIVCARDS.innerHTML = `<h3 style='text-align:center;color:red;'>No matches found for ' ${searchText} ' in ${arrayCategoryFilter[0].category}</h3>`
+                        DIVCARDS.innerHTML = `<h3 style='text-align:center;color:red;'>No matches found for ' ${searchText} '</h3>`
                         event.preventDefault();
                     }
                 }
+
                 )
 
             } if (!check[i].checked) {
                 acum += 1;
-                n = undefined;
+                ar = [];
             }
 
-            if (acum == (Math.floor((check.length) / 3))) {
-
+            if (acum == CHECKBOX_ARRAY.length) {
                 allCards = '';
                 getAllCards();
                 event.stopImmediatePropagation();
@@ -323,13 +349,13 @@ const getAllCards = () => {
             i += 3;
 
         }
+
     });
 
     BUTTON_SEARCH.addEventListener("click", (e) => {
         let searchText = INPUT_SEARCH.value.toLowerCase();
         if (!check[1].checked) {
-
-
+         
             let arrayEventsFiltered =
                 data.filter(
                     card => (card.name.toLowerCase().includes(searchText) || (card.description.toLowerCase().includes(searchText)))
@@ -347,7 +373,7 @@ const getAllCards = () => {
                     <h5 class="card-title">${ev.name}</h5>
                     <p class="card-text">${ev.description}o</p>      
                     <h6>Price: $ ${ev.price}</h6>
-                    <a href="./details.html" target="_blank" onclick="getDetails(${data.indexOf(ev)})" class="btn">Ver más</a>
+                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
                 </div>
             </div>
         </div>
@@ -377,7 +403,7 @@ const getAllCards = () => {
                     <h5 class="card-title">${ev.name}</h5>
                     <p class="card-text">${ev.description}o</p>      
                     <h6>Price: $ ${ev.price}</h6>
-                    <a href="./details.html" target="_blank" onclick="getDetails(${data.indexOf(ev)})" class="btn">Ver más</a>
+                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
                 </div>
             </div>
         </div>
@@ -390,69 +416,206 @@ const getAllCards = () => {
                 event.preventDefault();
 
             }
+            event.stopImmediatePropagation();
 
         }
 
     });
+
 }
 
 //-------------------------------------------------------------------------------------
 //Buscamos las tarjetas de eventos que ya pasaron.
 
-let pastEventsCards = '';
+ar = [];
+nAr = [];
 const getPastEvents = () => {
+    let arrayCategoryFilter = [];
+    let pastEventsCards = '';
+    let arrayEventsFiltered = []
 
     let pastEventsArray = data.filter(ev => (Date.parse(ev.date) < currentDateFormat))
     pastEventsArray.forEach(
         e => (
             pastEventsCards +=
-            `<div class="col">
-    <div class="card">
-        <img src="${e.image}" class="card-img-top" alt="img">
-        <div class="card-body">
-            <h5 class="card-title">${e.name}</h5>
-            <p class="card-text">${e.description}o</p>
-            <h6>Price: $ ${e.price}</h6>
-            <a href="./details.html" target="_blank" onclick="getDetails(${data.indexOf(e)})" class="btn">Ver más</a>
-        </div>
-    </div>
-</div>
-`
-        ));
+                    `<div class="col">
+                         <div class="card">
+                            <img src="${e.image}" class="card-img-top" alt="img">
+                            <div class="card-body">
+                                <h5 class="card-title">${e.name}</h5>
+                                <p class="card-text">${e.description}o</p>
+                                <h6>Price: $ ${e.price}</h6>
+                                <a href="./details.html" target="_blank" onclick="getDetails(${e._id})" class="btn">Ver más</a>
+                            </div>
+                        </div>
+                    </div>
+                    `
+                    ));
+
     DIV_CARDS_PAST_EVENTS.innerHTML = pastEventsCards;
+    pastEventsCards = '';
+
+    let CHECKBOX_ARRAY = document.querySelectorAll("input[type=checkbox]");
+    let acum = 0;
+    let check = FLEX_CONTAINER_CHECKBOX.children[0].childNodes;
+
+    FLEX_CONTAINER_CHECKBOX.children[0].addEventListener("change", () => {
+        let i = 1;
+        let searchFilterByCategory = [];
+        acum = 0;
+        pastEventsCards = '';
+
+        ar.concat(arrayCategoryFilter);
+
+        while (i < check.length) {
+            if (check[i].checked) {
+                arrayCategoryFilter = data.filter(ev => (ev.category.toLowerCase() == check[i].name.toLowerCase()));
+                arrayCategoryFilter.forEach(ev =>
+                    pastEventsCards += `
+                    <div class="col">
+                        <div class="card">
+                            <img src="${ev.image}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">${ev.name}</h5>
+                                    <p class="card-text">${ev.description}o</p>      
+                                    <h6>Price: $ ${ev.price}</h6>
+                                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
+                                </div>
+                        </div>
+                    </div>
+            `)
+                let k = 0;
+                while (k < arrayCategoryFilter.length) {
+
+                    ar.push(arrayCategoryFilter[k]);
+                    k += 1;
+                }
+                DIV_CARDS_PAST_EVENTS.innerHTML = pastEventsCards;
+
+                nAr = arrayObjectWithouthRepeat(ar);
+
+                BUTTON_SEARCH_PAST.addEventListener("click", (e) => {
+                    let searchText = INPUT_SEARCH_PAST.value.toLowerCase();
+
+                    searchFilterByCategory =
+                        nAr.filter(
+                            card => (card.name.toLowerCase().includes(searchText) || (card.description.toLowerCase().includes(searchText)))
+                        )
+
+
+                    pastEventsCards = '';
+
+                    if (searchFilterByCategory.length > 0) {
+                        searchFilterByCategory.forEach(ev => (
+                            pastEventsCards += `
+                                                <div class="col">
+                                                    <div class="card">
+                                                        <img src="${ev.image}" class="card-img-top" alt="...">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">${ev.name}</h5>
+                                                            <p class="card-text">${ev.description}o</p>      
+                                                            <h6>Price: $ ${ev.price}</h6>
+                                                            <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                 `))
+
+                        DIV_CARDS_PAST_EVENTS.innerHTML = pastEventsCards;
+
+                        event.preventDefault();
+                    } else {
+                        DIV_CARDS_PAST_EVENTS.innerHTML = `<h3 style='text-align:center;color:red;'>No matches found for ' ${searchText} '</h3>`
+                        event.preventDefault();
+                        
+                    }
+                }
+
+                )
+
+            } if (!check[i].checked) {
+                acum += 1;
+                ar = [];
+            }
+
+            if (acum == CHECKBOX_ARRAY.length) {
+                pastEventsCards = '';
+                getPastEvents();
+                event.stopImmediatePropagation();
+                break;
+            }
+            event.stopImmediatePropagation();
+            i += 3;
+
+        }
+
+    });
 
     //Agregamos eventos
 
     BUTTON_SEARCH_PAST.addEventListener("click", (e) => {
         let searchText = INPUT_SEARCH_PAST.value.toLowerCase();
-        let arrayEventsFiltered =
-            pastEventsArray.filter(
-                card => (card.name.toLowerCase().includes(searchText) || (card.description.toLowerCase().includes(searchText)))
-            )
+        if (!check[1].checked) {
+            let arrayEventsFiltered =
+                pastEventsArray.filter(
+                    card => (card.name.toLowerCase().includes(searchText) || (card.description.toLowerCase().includes(searchText)))
+                )
 
-        pastEventsCards = '';
+            pastEventsCards = '';
 
-        if (arrayEventsFiltered.length > 0) {
-            arrayEventsFiltered.forEach(ev => (
-                pastEventsCards += `
-            <div class="col">
-                <div class="card">
-                    <img src="${ev.image}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">${ev.name}</h5>
-                        <p class="card-text">${ev.description}o</p>      
-                        <h6>Price: $ ${ev.price}</h6>
-                        <a href="./details.html" target="_blank" onclick="getDetails(${data.indexOf(ev)})" class="btn">Ver más</a>
-                    </div>
-                </div>
-            </div>
-    `))
+            if (arrayEventsFiltered.length > 0) {
+                arrayEventsFiltered.forEach(ev => (
+                    pastEventsCards += `
+                                        <div class="col">
+                                            <div class="card">
+                                                <img src="${ev.image}" class="card-img-top" alt="...">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${ev.name}</h5>
+                                                    <p class="card-text">${ev.description}o</p>      
+                                                    <h6>Price: $ ${ev.price}</h6>
+                                                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            `))
 
-            DIV_CARDS_PAST_EVENTS.innerHTML = pastEventsCards;
-            event.preventDefault();
+                DIV_CARDS_PAST_EVENTS.innerHTML = pastEventsCards;
+                event.preventDefault();
+            } else {
+                DIV_CARDS_PAST_EVENTS.innerHTML = `<h3 style='text-align:center;color:red;'>No matches found for ' ${searchText} '</h3>`
+                event.preventDefault();
+            }
         } else {
-            DIV_CARDS_PAST_EVENTS.innerHTML = `<h3 style='text-align:center;color:red;'>No matches found for ' ${searchText} '</h3>`
-            event.preventDefault();
+            let arrayEvent =
+                arrayEventsFiltered.filter(
+                    card => (card.name.toLowerCase().includes(searchText) || (card.description.toLowerCase().includes(searchText)))
+                )
+            pastEventsCards = '';
+
+            if (arrayEvent.length > 0) {
+                arrayEvent.forEach(ev => (
+                    pastEventsCards += `
+                                        <div class="col">
+                                            <div class="card">
+                                                <img src="${ev.image}" class="card-img-top" alt="...">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${ev.name}</h5>
+                                                    <p class="card-text">${ev.description}o</p>      
+                                                    <h6>Price: $ ${ev.price}</h6>
+                                                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        `))
+
+                DIV_CARDS_PAST_EVENTS.innerHTML = pastEventsCards;
+                event.preventDefault();
+            } else {
+                DIV_CARDS_PAST_EVENTS.innerHTML = `<h3 style='text-align:center;color:red;'>No matches found for ' ${searchText} '</h3>`;
+                event.preventDefault();
+
+            }
+            event.stopImmediatePropagation();
         }
     }
     )
@@ -461,127 +624,270 @@ const getPastEvents = () => {
 
 
 //-------------------------------------------------------------------------------------
+//***********************UPCOMING EVENTS*************************************
 
 let futureEventsCards = '';
 const getFutureEvents = () => {
-
+    let futureEventsCards = '';
+    let ar = [];
+    let nAr = [];
+    let arrayCategoryFilter = [];
+let arrayEventsFiltered = []
     let futureEventsArray = data.filter(ev => (Date.parse(ev.date) > currentDateFormat))
     futureEventsArray.forEach(
         e => (
             futureEventsCards +=
-            `<div class="col">
-            <div class="card">
-                <img src="${e.image}" class="card-img-top" alt="img">
-                <div class="card-body">
-                    <h5 class="card-title">${e.name}</h5>
-                    <p class="card-text">${e.description}o</p>
-                    <h6>Price: $ ${e.price}</h6>
-                    <a href="./details.html" target="_blank" onclick="getDetails(${data.indexOf(e)})" class="btn">Ver más</a>
-                </div>
-            </div>
-        </div>
-        `
-        ));
+                         `<div class="col">
+                              <div class="card">
+                                  <img src="${e.image}" class="card-img-top" alt="img">
+                                  <div class="card-body">
+                                      <h5 class="card-title">${e.name}</h5>
+                                      <p class="card-text">${e.description}o</p>
+                                      <h6>Price: $ ${e.price}</h6>
+                                      <a href="./details.html" target="_BLANK" onclick="getDetails(${e._id})" class="btn">Ver más</a>
+                                  </div>
+                              </div>
+                         </div>
+                            `
+                            ));
     DIV_CARDS_FUTURE_EVENTS.innerHTML = futureEventsCards;
+
+    futureEventsCards = '';
+
+    let CHECKBOX_ARRAY = document.querySelectorAll("input[type=checkbox]");
+    let acum = 0;
+    let check = FLEX_CONTAINER_CHECKBOX.children[0].childNodes;
+//***********************CAPTURANDO EVENTO CHANGE DE CHECKBOX************************************
+    FLEX_CONTAINER_CHECKBOX.children[0].addEventListener("change", () => {
+        let i = 1;
+        let searchFilterByCategory = [];
+        acum = 0;
+        futureEventsCards = '';
+
+        ar.concat(arrayCategoryFilter);
+
+        while (i < check.length) {
+            if (check[i].checked) {
+                
+                arrayCategoryFilter = data.filter(ev => (ev.category.toLowerCase() == check[i].name.toLowerCase()));
+                arrayCategoryFilter.forEach(ev =>
+                    futureEventsCards += `
+                                         <div class="col">
+                                            <div class="card">
+                                                <img src="${ev.image}" class="card-img-top" alt="...">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${ev.name}</h5>
+                                                    <p class="card-text">${ev.description}o</p>      
+                                                    <h6>Price: $ ${ev.price}</h6>
+                                                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
+                                                </div>
+                                            </div>
+                                         </div>
+                                         `)
+                console.log(arrayCategoryFilter)
+                let k = 0;
+                while (k < arrayCategoryFilter.length) {
+
+                    ar.push(arrayCategoryFilter[k]);
+                    k += 1;
+                }
+                DIV_CARDS_FUTURE_EVENTS.innerHTML = futureEventsCards;
+
+                nAr = arrayObjectWithouthRepeat(ar);
+
+                //***********************BOTÓN SEARCH COMBINADO*******************************
+
+
+                BUTTON_SEARCH_FUTURE.addEventListener("click", (e) => {
+                    let searchText = INPUT_SEARCH_FUTURE.value.toLowerCase();
+
+                    searchFilterByCategory =
+                        nAr.filter(
+                            card => (card.name.toLowerCase().includes(searchText) || (card.description.toLowerCase().includes(searchText)))
+                        )
+
+
+                    futureEventsCards = '';
+
+                    if (searchFilterByCategory.length > 0) {
+                        searchFilterByCategory.forEach(ev => (
+                            futureEventsCards += `
+                                         <div class="col">
+                                             <div class="card">
+                                                 <img src="${ev.image}" class="card-img-top" alt="...">
+                                                 <div class="card-body">
+                                                     <h5 class="card-title">${ev.name}</h5>
+                                                     <p class="card-text">${ev.description}o</p>      
+                                                     <h6>Price: $ ${ev.price}</h6>
+                                                     <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                            `))
+
+                        DIV_CARDS_FUTURE_EVENTS.innerHTML = futureEventsCards;
+
+                        event.preventDefault();
+                    } else {
+                        DIV_CARDS_FUTURE_EVENTS.innerHTML = `<h3 style='text-align:center;color:red;'>No matches found for ' ${searchText} '</h3>`
+                        event.preventDefault();
+                       
+                    }
+                }
+
+                )
+
+            } if (!check[i].checked) {
+                acum += 1;
+                ar = [];
+            }
+
+            if (acum == CHECKBOX_ARRAY.length) {
+                futureEventsCards = '';
+                getFutureEvents();
+                event.stopImmediatePropagation();
+                break;
+            }
+            event.stopImmediatePropagation();
+            i += 3;
+
+        }
+
+    });
+
+//***********************BUSQUEDA DE EVENTOS SIN FILTRO POR CATEGORIA*************************************
 
     BUTTON_SEARCH_FUTURE.addEventListener("click", (e) => {
         let searchText = INPUT_SEARCH_FUTURE.value.toLowerCase();
-        let futureArrayEventsFiltered =
-            futureEventsArray.filter(
-                card => (card.name.toLowerCase().includes(searchText) || (card.description.toLowerCase().includes(searchText)))
-            )
+        if (!check[1].checked) {
+         arrayEventsFiltered =
+                futureEventsArray.filter(
+                    card => (card.name.toLowerCase().includes(searchText) || (card.description.toLowerCase().includes(searchText)))
+                )
 
-        futureEventsCards = '';
+            futureEventsCards = '';
 
-        if (futureArrayEventsFiltered.length > 0) {
-            futureArrayEventsFiltered.forEach(ev => (
-                futureEventsCards += `
-                <div class="col">
-                    <div class="card">
-                        <img src="${ev.image}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">${ev.name}</h5>
-                            <p class="card-text">${ev.description}o</p>      
-                            <h6>Price: $ ${ev.price}</h6>
-                            <a href="./details.html" target="_blank" onclick="getDetails(${data.indexOf(ev)})" class="btn">Ver más</a>
-                        </div>
-                    </div>
-                </div>
-        `))
+            if (arrayEventsFiltered.length > 0) {
+                arrayEventsFiltered.forEach(ev => (
+                    futureEventsCards += `
+                                            <div class="col">
+                                                <div class="card">
+                                                    <img src="${ev.image}" class="card-img-top" alt="...">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">${ev.name}</h5>
+                                                        <p class="card-text">${ev.description}o</p>      
+                                                        <h6>Price: $ ${ev.price}</h6>
+                                                        <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                 `))
 
-            DIV_CARDS_FUTURE_EVENTS.innerHTML = futureEventsCards;
-            event.preventDefault();
+                DIV_CARDS_FUTURE_EVENTS.innerHTML = futureEventsCards;
+                event.preventDefault();
+            } else {
+                DIV_CARDS_FUTURE_EVENTS.innerHTML = `<h3 style='text-align:center;color:red;'>No matches found for ' ${searchText} '</h3>`
+                event.preventDefault();
+            }
         } else {
-            DIV_CARDS_FUTURE_EVENTS.innerHTML = `<h3 style='text-align:center;color:red;'>No matches found for ' ${searchText} '</h3>`
-            event.preventDefault();
+            let arrayEvent =
+                arrayEventsFiltered.filter(
+                    card => (card.name.toLowerCase().includes(searchText) || (card.description.toLowerCase().includes(searchText)))
+                )
+            futureEventsCards = '';
+
+            if (arrayEvent.length > 0) {
+                arrayEvent.forEach(ev => (
+                    futureEventsCards += `
+                                        <div class="col">
+                                            <div class="card">
+                                                <img src="${ev.image}" class="card-img-top" alt="...">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${ev.name}</h5>
+                                                    <p class="card-text">${ev.description}o</p>      
+                                                    <h6>Price: $ ${ev.price}</h6>
+                                                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        `))
+
+                DIV_CARDS_FUTURE_EVENTS.innerHTML = futureEventsCards;
+                event.preventDefault();
+            } else {
+                DIV_CARDS_FUTURE_EVENTS.innerHTML = `<h3 style='text-align:center;color:red;'>No matches found for ' ${searchText} '</h3>`;
+                event.preventDefault();
+
+            }
+            event.stopImmediatePropagation();
         }
     }
     )
+
+
+}
+
+//
+
+//-------------------------------------------------------------------------------------
+const getDetails = (e) => {
+
+    window.location.href = (`./details.html?id=${e}`)
+
 }
 
 //-------------------------------------------------------------------------------------
+let eventDetails = '';
+const details = () => {
 
-function getDetails(e) {
-    localStorage.setItem("id", e);
-}
+    let params = new URLSearchParams(document.location.search);
+    let id = params.get("id");
 
-//-------------------------------------------------------------------------------------
-
-
-const details = (e) => {
-    let id = localStorage.getItem('id');
-    let element = '';
-
-    data.forEach(i => {
-        if (data.indexOf(i) == id) {
-            element = i;
-        }
-    })
+    let element = data.find(v => v._id == id)
 
     if (Date.parse(element.date) < currentDateFormat) {
-
-        D.innerHTML = `
-            <div class="row g-0">
-                 <div class="col-md-4">
-                 <img src="${element.image}" class="img-fluid rounded-start" alt="...">
-                </div>
-                <div class="col-md-8">
-                       <div class="card-body">
-                        <h5 class="card-title">${element.name}</h5>
-                          <p class="card-description">${element.description}</p>
-                        <p class="card-description">Date: <b style="color:#111">${element.date}</b></p>
-                        <p class="card-description">Capacity: <b style="color:#111">${element.capacity}</b></p>
-                        <p class="card-description">Assistance: <b style="color:#111">${element.assistance}</b></p>
-                           <p class="card-description">Place: <b style="color:#111">${element.place}</b></p>
-                        <p class="card-description">$ <i>${element.price}</i></p>
-                   </div>
-                </div>
-            </div>
-                                `;
+        eventDetails = `
+                            <div class="row g-0">
+                                 <div class="col-md-4">
+                                 <img src="${element.image}" class="img-fluid rounded-start" alt="...">
+                                </div>
+                                <div class="col-md-8">
+                                       <div class="card-body">
+                                        <h5 class="card-title">${element.name}</h5>
+                                          <p class="card-description">${element.description}</p>
+                                        <p class="card-description">Date: <b style="color:#111">${element.date}</b></p>
+                                        <p class="card-description">Capacity: <b style="color:#111">${element.capacity}</b></p>
+                                        <p class="card-description">Assistance: <b style="color:#111">${element.assistance}</b></p>
+                                           <p class="card-description">Place: <b style="color:#111">${element.place}</b></p>
+                                        <p class="card-description">$ <i>${element.price}</i></p>
+                                   </div>
+                                </div>
+                            </div>
+                                                `;
+        CARD_DETAILS.innerHTML = eventDetails;
 
     } else {
-        D.innerHTML = `
-                <div class="row g-0">
-                     <div class="col-md-4">
-                     <img src="${element.image}" class="img-fluid rounded-start" alt="...">
-                     </div>
-                     <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">${element.name}</h5>
-                            <p class="card-description">${element.description}</p>
-                            <p class="card-description">Date: <b style="color:#111">${element.date}</b></p>
-                            <p class="card-description">Capacity: <b style="color:#111">${element.capacity}</b></p>
-                            <p class="card-description">Place: <b style="color:#111">${element.place}</b></p>
-                            <p class="card-description">$ <i>${element.price}</i></p>
-                        </div>
-                     </div>
-                </div>
-                                   `;
+        eventDetails = `
+                            <div class="row g-0">
+                                 <div class="col-md-4">
+                                 <img src="${element.image}" class="img-fluid rounded-start" alt="...">
+                                 </div>
+                                 <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${element.name}</h5>
+                                        <p class="card-description">${element.description}</p>
+                                        <p class="card-description">Date: <b style="color:#111">${element.date}</b></p>
+                                        <p class="card-description">Capacity: <b style="color:#111">${element.capacity}</b></p>
+                                        <p class="card-description">Place: <b style="color:#111">${element.place}</b></p>
+                                        <p class="card-description">$ <i>${element.price}</i></p>
+                                    </div>
+                                 </div>
+                            </div>
+                                               `;
+
+        CARD_DETAILS.innerHTML = eventDetails;
+
     }
 }
 //-------------------------------------------------------------------------------------
-
-addCheckBox();
-
-
-
+addCheckBox()
