@@ -89,7 +89,6 @@ let ar = [];
 let nAr = [];
 let arrayCategoryFilter = [];
 const getAllCards = async () => {
-    addCheckBox();
     let data = await datos();
 
     for (let p of data.events) {
@@ -227,7 +226,6 @@ const getPastEvents = async () => {
     let arrayCategoryFilter = [];
     let pastEventsCards = '';
     let arrayEventsFiltered = [];
-    addCheckBox();
     let data = await datos();
 
     let currentDateFormat = Date.parse(data.currentDate);
@@ -375,7 +373,6 @@ const getFutureEvents = async () => {
     let arrayEventsFiltered = [];
     let data = await datos();
     let currentDateFormat = Date.parse(data.currentDate);
-    addCheckBox();
     futureEventsArray = data.events.filter(ev => (Date.parse(ev.date) > currentDateFormat))
     futureEventsArray.forEach(
         e => (
@@ -714,5 +711,6 @@ const statistics = () => {
 
 }
 
+    addCheckBox();
 
 
