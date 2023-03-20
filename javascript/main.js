@@ -89,7 +89,7 @@ let ar = [];
 let nAr = [];
 let arrayCategoryFilter = [];
 const getAllCards = async () => {
-
+    addCheckBox();
     let data = await datos();
 
     for (let p of data.events) {
@@ -227,6 +227,7 @@ const getPastEvents = async () => {
     let arrayCategoryFilter = [];
     let pastEventsCards = '';
     let arrayEventsFiltered = [];
+    addCheckBox();
     let data = await datos();
 
     let currentDateFormat = Date.parse(data.currentDate);
@@ -374,7 +375,7 @@ const getFutureEvents = async () => {
     let arrayEventsFiltered = [];
     let data = await datos();
     let currentDateFormat = Date.parse(data.currentDate);
-
+    addCheckBox();
     futureEventsArray = data.events.filter(ev => (Date.parse(ev.date) > currentDateFormat))
     futureEventsArray.forEach(
         e => (
@@ -580,12 +581,13 @@ const details = async () => {
 
 
 let porcentajes = [];
-let catFilter =[];
-const addStats = (selector,arr,total,variable,i)=>{
-        k= arr.length;
-        selector.children[i+1].children[0].innerHTML = `<i style="color:#fff;">${arr[i]}</i>`;
-        selector.children[i+1].children[1].innerHTML = `<b style="color:#aaa;">${total}</b>`;
-        selector.children[i+1].children[2].innerHTML = `<b style="color:#aaa;">${variable}` + "% </b>";
+let catFilter = [];
+
+const addStats = (selector, arr, total, variable, i) => {
+    
+    selector.children[i + 1].children[0].innerHTML = `<i style="color:#fff;">${arr[i]}</i>`;
+    selector.children[i + 1].children[1].innerHTML = `<b style="color:#aaa;">$ ${total}</b>`;
+    selector.children[i + 1].children[2].innerHTML = `<b style="color:#aaa;">${variable}` + "% </b>";
 }
 
 const eventsStatistics = async () => {
@@ -595,7 +597,7 @@ const eventsStatistics = async () => {
     data.events.forEach(
         ev => {
             if (ev.assistance != undefined) {
-                porcentajes.push("("+adjustPercentage(ev.assistance * 100 / ev.capacity) + "%)" + `  <b style="color:#fff">${ev.name}</b>`);
+                porcentajes.push("(" + adjustPercentage(ev.assistance * 100 / ev.capacity) + "%)" + `  <b style="color:#fff">${ev.name}</b>`);
             }
         }
     )
@@ -631,10 +633,10 @@ const eventsStatistics = async () => {
         acum++;
     }
 }
-//let catFilter=[];
 
-const futureEventsStatistics = async ()=>{
+const futureEventsStatistics = async () => {
     const tableUpcoming = document.getElementById('upcomingTable').children[1]
+
     let data = await datos();
 
     let currentDateFormat = Date.parse(data.currentDate);
@@ -642,28 +644,34 @@ const futureEventsStatistics = async ()=>{
     let upcomingEvents = data.events.filter(ev => (Date.parse(ev.date) > currentDateFormat));
 
     let cat = deleteRepeat(upcomingEvents.map(ev => ev.category));
-    
-    i=0;
 
-  
+    i = 0;
+
+
 
     total = 0;
 
-    while( i < cat.length){
+    while (i < cat.length) {
+        total = 0;
+        estimate = 0
+        est = 0;
+        capacity = 0;
 
-        catFilter = upcomingEvents.filter(ev=> (ev.category == cat[i]));
-        catFilter.forEach(ev=>{
-          total = ev.estimate * ev.price;
-          estimate = adjustPercentage(ev.estimate * 100 / ev.capacity);
+        catFilter = upcomingEvents.filter(ev => (ev.category == cat[i]));
+        catFilter.forEach(ev => {
+
+            total += ev.estimate * ev.price;
+            est += ev.estimate;
+            capacity += ev.capacity;
         })
-
-        addStats(tableUpcoming,cat,total,estimate,i);
+        estimate = adjustPercentage(est * 100 / capacity);
+        addStats(tableUpcoming, cat, total, estimate, i);
 
         i++;
     }
 }
 
-const pastEventsStatistics = async ()=>{
+const pastEventsStatistics = async () => {
     const tablePast = document.getElementById('pastTableStatistics').children[1]
     let data = await datos();
 
@@ -672,30 +680,39 @@ const pastEventsStatistics = async ()=>{
     let pastEvents = data.events.filter(ev => (Date.parse(ev.date) < currentDateFormat));
 
     let cat = deleteRepeat(pastEvents.map(ev => ev.category));
-    
-    i=0;
+
+    i = 0;
 
 
-    total = 0;
 
-    while( i < cat.length){
+    while (i < cat.length) {
+        total = 0;
+        assist = 0;
+        capacity = 0;
 
-        catFilter = pastEvents.filter(ev=> (ev.category == cat[i]));
-        catFilter.forEach(ev=>{
-          total = ev.assistance * ev.price;
-          estimate = adjustPercentage(ev.assistance * 100 / ev.capacity);
+        catFilter = pastEvents.filter(ev => (ev.category == cat[i]));
+        catFilter.forEach(ev => {
+
+            total += ev.assistance * ev.price;
+            assist += ev.assistance;
+            capacity += ev.capacity;
+
         })
-        addStats(tablePast,cat,total,estimate,i);
+        estimate = adjustPercentage(assist * 100 / capacity);
+        addStats(tablePast, cat, total, estimate, i);
         i++;
     }
 }
 //               
 
 //-------------------------------------------------------------------------------------
-const statistics=  ()=>{
+const statistics = () => {
+
     eventsStatistics();
     pastEventsStatistics();
     futureEventsStatistics();
+
 }
-addCheckBox()
+
+
 
