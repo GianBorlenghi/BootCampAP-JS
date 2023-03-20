@@ -17,183 +17,7 @@ const INPUT_SEARCH_FUTURE = document.getElementById("inputSearch_future")
 const FOOTER = document.querySelector("footer")
 const CHECKBOX_ARRAY = document.querySelectorAll("input[type=checkbox]");
 
-let currentDate = "2022-01-01";
-let currentDateFormat = Date.parse(currentDate);
-
-
-let data = [
-    {
-        _id: 1,
-        "image": "https://i.postimg.cc/Fs03hQDt/Collectivities-Party.jpg",
-        "name": "Collectivities Party",
-        "date": "2021-12-12",
-        "description": "Enjoy your favourite dishes, from different countries, in a unique event for the whole family.",
-        "category": "Food Fair",
-        "place": "Room A",
-        "capacity": 45000,
-        "assistance": 42756,
-        "price": 5,
-    },
-    {
-        _id: 2,
-        "image": "https://i.postimg.cc/ZmD3Xf57/Korean-style.jpg",
-        "name": "Korean style",
-        "date": "2022-08-12",
-        "description": "Enjoy the best Korean dishes, with international chefs and awesome events.",
-        "category": "Food Fair",
-        "place": "Room A",
-        "capacity": 45000,
-        "assistance": 42756,
-        "price": 10,
-    },
-    {
-        _id: 3,
-        "image": "https://i.postimg.cc/GmHRkbNV/Jurassic-Park.jpg",
-        "name": "Jurassic Park",
-        "date": "2021-11-02",
-        "description": "Let's go meet the biggest dinosaurs in the paleontology museum.",
-        "category": "Museum",
-        "place": "Field",
-        "capacity": 82000,
-        "assistance": 65892,
-        "price": 15,
-    },
-    {
-        _id: 4,
-        "image": "https://i.postimg.cc/c4C2zXm8/Parisian-Museum.jpg",
-        "name": "Parisian Museum",
-        "date": "2022-11-02",
-        "description": "A unique tour in the city of lights, get to know one of the most iconic places.",
-        "category": "Museum",
-        "place": "Paris",
-        "capacity": 8200,
-        "estimate": 8200,
-        "price": 3500,
-    },
-    {
-        _id: 5,
-        "image": "https://i.postimg.cc/KYD0jMf2/comicon.jpg",
-        "name": "Comicon",
-        "date": "2021-02-12",
-        "description": "For comic lovers, all your favourite characters gathered in one place.",
-        "category": "Costume Party",
-        "place": "Room C",
-        "capacity": 120000,
-        "assistance": 110000,
-        "price": 54,
-    },
-    {
-        _id: 6,
-        "image": "https://i.postimg.cc/RZ9fH4Pr/halloween.jpg",
-        "name": "Halloween Night",
-        "date": "2022-02-12",
-        "description": "Come with your scariest costume and win incredible prizes.",
-        "category": "Costume Party",
-        "place": "Room C",
-        "capacity": 12000,
-        "estimate": 9000,
-        "price": 12,
-    },
-    {
-        _id: 7,
-        "image": "https://i.postimg.cc/PrMJ0ZMc/Metallica-in-concert.jpg",
-        "name": "Metallica in concert",
-        "date": "2022-01-22",
-        "description": "The only concert of the most emblematic band in the world.",
-        "category": "Music Concert",
-        "place": "Room A"
-        , "capacity": 138000,
-        "estimate": 138000,
-        "price": 150,
-    },
-    {
-        _id: 8,
-        "image": "https://i.postimg.cc/KvsSK8cj/Electronic-Fest.jpg",
-        "name": "Electronic Fest",
-        "date": "2021-01-22",
-        "description": "The best national and international DJs gathered in one place.",
-        "category": "Music Concert",
-        "place": "Room A",
-        "capacity": 138000,
-        "assistance": 110300,
-        "price": 250,
-    },
-    {
-        _id: 9,
-        "image": "https://i.postimg.cc/fyLqZY9K/10-K-for-life.jpg",
-        "name": "10K for life",
-        "date": "2021-03-01",
-        "description": "Come and exercise, improve your health and lifestyle.",
-        "category": "Race",
-        "place": "Soccer field",
-        "capacity": 30000,
-        "assistance": 25698,
-        "price": 3,
-    },
-    {
-        _id: 10,
-        "image": "https://i.postimg.cc/zv67r65z/15kny.jpg",
-        "name": "15K NY",
-        "date": "2022-03-01",
-        "description": "We'll be raising funds for hospitals and medical care in this unique event held in The Big Apple.",
-        "category": "Race",
-        "place": "New York",
-        "capacity": 3000000,
-        "assistance": 2569800,
-        "price": 3,
-    },
-    {
-        _id: 11,
-        "image": "https://i.postimg.cc/Sst763n6/book1.jpg",
-        "name": "School's book fair",
-        "date": "2022-10-15",
-        "description": "Bring your unused school book and take the one you need.",
-        "category": "Book Exchange",
-        "place": "Room D1",
-        "capacity": 150000,
-        "estimate": 123286,
-        "price": 1,
-    },
-    {
-        _id: 12,
-        "image": "https://i.postimg.cc/05FhxHVK/book4.jpg",
-        "name": "Just for your kitchen",
-        "date": "2021-11-09",
-        "description": "If you're a gastronomy lover come get the cookbook that best suits your taste and your family's.",
-        "category": "Book Exchange",
-        "place": "Room D6",
-        "capacity": 130000,
-        "assistance": 90000,
-        "price": 100,
-    },
-    {
-        _id: 13,
-        "image": "https://i.postimg.cc/vH52y81C/cinema4.jpg",
-        "name": "Batman",
-        "date": "2021-03-11",
-        "description": "Come see Batman fight crime in Gotham City.",
-        "category": "Cinema",
-        "place": "Room D1",
-        "capacity": 11000,
-        "assistance": 9300,
-        "price": 225,
-    },
-    {
-        _id: 14,
-        "image": "https://i.postimg.cc/T3C92KTN/scale.jpg",
-        "name": "Avengers",
-        "date": "2022-10-15",
-        "description": "Marvel's Avengers Premier in 3d, the start of an epic saga with your favourite superheroes.",
-        "category": "Cinema",
-        "place": "Room D1",
-        "capacity": 9000,
-        "estimate": 9000,
-        "price": 250,
-    }
-];
-
 //-------------------------------------------------------------------------------------
-
 
 function deleteRepeat(arr) {
     return arr.sort().filter(function (actualCard, posActual, arry) {
@@ -207,12 +31,25 @@ function arrayObjectWithouthRepeat(array) {
     let set = new Set(array.map(JSON.stringify))
     return Array.from(set).map(JSON.parse);
 }
+function adjustPercentage(x) {
+    return Number.parseFloat(x).toFixed(2);
+}
+async function datos() {
+    try {
+        const response = await fetch('https://mindhub-xj03.onrender.com/api/amazing')
+        data = await response.json();
+        return data;
+    } catch (er) {
+        throw new Error(er);
+    }
+}
 
 //-------------------------------------------------------------------------------------
 let checkBox = ''
-const addCheckBox = () => {
+const addCheckBox = async () => {
     let i = 0;
-    let catArray = data.map(ev => ev.category);
+    let data = await datos();
+    let catArray = data.events.map(ev => ev.category);
     let catArrayWithoutRepeat = deleteRepeat(catArray);
     let div = document.createElement('div');
     div.classList.add("flex-checkbox")
@@ -224,6 +61,22 @@ const addCheckBox = () => {
 
     div.innerHTML = checkBox;
     FLEX_CONTAINER_CHECKBOX.insertBefore(div, FLEX_CONTAINER_CHECKBOX.children[0])
+}
+
+const generateCard = (event) => {
+    return `
+    <div class="col">
+        <div class="card">
+            <img src="${event.image}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">${event.name}</h5>
+                <p class="card-text">${event.description}</p>      
+                <h6>Price: $ ${event.price}</h6>
+                <a target="_blank" href="./details.html" onclick="getDetails(${event._id})" class="btn">Ver más</a>
+            </div>
+        </div>
+    </div>
+`;
 
 }
 
@@ -235,24 +88,13 @@ let allCards = '';
 let ar = [];
 let nAr = [];
 let arrayCategoryFilter = [];
-const getAllCards = () => {
+const getAllCards = async () => {
 
+    let data = await datos();
 
-    for (let p of data) {
+    for (let p of data.events) {
         let dateEvent = Date.parse(p.date)
-        allCards += `
-                <div class="col">
-                    <div class="card">
-                        <img src="${p.image}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">${p.name}</h5>
-                            <p class="card-text">${p.description}</p>      
-                            <h6>Price: $ ${p.price}</h6>
-                            <a target="_blank" href="./details.html" onclick="getDetails(${p._id})" class="btn">Ver más</a>
-                        </div>
-                    </div>
-                </div>
-    `;
+        allCards += generateCard(p);
     }
 
     DIVCARDS.innerHTML = allCards;
@@ -271,21 +113,9 @@ const getAllCards = () => {
         ar.concat(arrayCategoryFilter);
         while (i < check.length) {
             if (check[i].checked) {
-                arrayCategoryFilter = data.filter(ev => (ev.category.toLowerCase() == check[i].name.toLowerCase()));
+                arrayCategoryFilter = data.events.filter(ev => (ev.category.toLowerCase() == check[i].name.toLowerCase()));
                 arrayCategoryFilter.forEach(ev =>
-                    allCards += `
-                                <div class="col">
-                                    <div class="card">
-                                        <img src="${ev.image}" class="card-img-top" alt="...">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${ev.name}</h5>
-                                            <p class="card-text">${ev.description}o</p>      
-                                            <h6>Price: $ ${ev.price}</h6>
-                                            <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                `)
+                    allCards += generateCard(ev))
                 let k = 0;
                 while (k < arrayCategoryFilter.length) {
 
@@ -297,7 +127,7 @@ const getAllCards = () => {
                 nAr = arrayObjectWithouthRepeat(ar);
 
                 BUTTON_SEARCH.addEventListener("click", (e) => {
-                 
+
                     let searchText = INPUT_SEARCH.value.toLowerCase();
                     searchFilterByCategory =
                         nAr.filter(
@@ -309,19 +139,7 @@ const getAllCards = () => {
 
                     if (searchFilterByCategory.length > 0) {
                         searchFilterByCategory.forEach(ev => (
-                            allCards += `
-                        <div class="col">
-                            <div class="card">
-                                <img src="${ev.image}" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">${ev.name}</h5>
-                                    <p class="card-text">${ev.description}o</p>      
-                                    <h6>Price: $ ${ev.price}</h6>
-                                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
-                                </div>
-                            </div>
-                        </div>
-                `))
+                            allCards += generateCard(ev)))
 
                         DIVCARDS.innerHTML = allCards;
 
@@ -355,9 +173,9 @@ const getAllCards = () => {
     BUTTON_SEARCH.addEventListener("click", (e) => {
         let searchText = INPUT_SEARCH.value.toLowerCase();
         if (!check[1].checked) {
-         
+
             let arrayEventsFiltered =
-                data.filter(
+                data.events.filter(
                     card => (card.name.toLowerCase().includes(searchText) || (card.description.toLowerCase().includes(searchText)))
                 )
 
@@ -365,19 +183,7 @@ const getAllCards = () => {
 
             if (arrayEventsFiltered.length > 0) {
                 arrayEventsFiltered.forEach(ev => (
-                    allCards += `
-        <div class="col">
-            <div class="card">
-                <img src="${ev.image}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">${ev.name}</h5>
-                    <p class="card-text">${ev.description}o</p>      
-                    <h6>Price: $ ${ev.price}</h6>
-                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
-                </div>
-            </div>
-        </div>
-`))
+                    allCards += generateCard(ev)))
 
                 DIVCARDS.innerHTML = allCards;
                 event.preventDefault();
@@ -395,19 +201,7 @@ const getAllCards = () => {
 
             if (arrayEvent.length > 0) {
                 arrayEvent.forEach(ev => (
-                    allCards += `
-        <div class="col">
-            <div class="card">
-                <img src="${ev.image}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">${ev.name}</h5>
-                    <p class="card-text">${ev.description}o</p>      
-                    <h6>Price: $ ${ev.price}</h6>
-                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
-                </div>
-            </div>
-        </div>
-`))
+                    allCards += generateCard(ev)))
 
                 DIVCARDS.innerHTML = allCards;
                 event.preventDefault();
@@ -429,28 +223,20 @@ const getAllCards = () => {
 
 ar = [];
 nAr = [];
-const getPastEvents = () => {
+const getPastEvents = async () => {
     let arrayCategoryFilter = [];
     let pastEventsCards = '';
-    let arrayEventsFiltered = []
+    let arrayEventsFiltered = [];
+    let data = await datos();
 
-    let pastEventsArray = data.filter(ev => (Date.parse(ev.date) < currentDateFormat))
+    let currentDateFormat = Date.parse(data.currentDate);
+
+
+    let pastEventsArray = data.events.filter(ev => (Date.parse(ev.date) < currentDateFormat))
     pastEventsArray.forEach(
         e => (
-            pastEventsCards +=
-                    `<div class="col">
-                         <div class="card">
-                            <img src="${e.image}" class="card-img-top" alt="img">
-                            <div class="card-body">
-                                <h5 class="card-title">${e.name}</h5>
-                                <p class="card-text">${e.description}o</p>
-                                <h6>Price: $ ${e.price}</h6>
-                                <a href="./details.html" target="_blank" onclick="getDetails(${e._id})" class="btn">Ver más</a>
-                            </div>
-                        </div>
-                    </div>
-                    `
-                    ));
+            pastEventsCards += generateCard(e)
+        ));
 
     DIV_CARDS_PAST_EVENTS.innerHTML = pastEventsCards;
     pastEventsCards = '';
@@ -469,21 +255,9 @@ const getPastEvents = () => {
 
         while (i < check.length) {
             if (check[i].checked) {
-                arrayCategoryFilter = data.filter(ev => (ev.category.toLowerCase() == check[i].name.toLowerCase()));
+                arrayCategoryFilter = data.events.filter(ev => (ev.category.toLowerCase() == check[i].name.toLowerCase()));
                 arrayCategoryFilter.forEach(ev =>
-                    pastEventsCards += `
-                    <div class="col">
-                        <div class="card">
-                            <img src="${ev.image}" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">${ev.name}</h5>
-                                    <p class="card-text">${ev.description}o</p>      
-                                    <h6>Price: $ ${ev.price}</h6>
-                                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
-                                </div>
-                        </div>
-                    </div>
-            `)
+                    pastEventsCards += generateCard(ev))
                 let k = 0;
                 while (k < arrayCategoryFilter.length) {
 
@@ -507,19 +281,7 @@ const getPastEvents = () => {
 
                     if (searchFilterByCategory.length > 0) {
                         searchFilterByCategory.forEach(ev => (
-                            pastEventsCards += `
-                                                <div class="col">
-                                                    <div class="card">
-                                                        <img src="${ev.image}" class="card-img-top" alt="...">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">${ev.name}</h5>
-                                                            <p class="card-text">${ev.description}o</p>      
-                                                            <h6>Price: $ ${ev.price}</h6>
-                                                            <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                 `))
+                            pastEventsCards += generateCard(ev)))
 
                         DIV_CARDS_PAST_EVENTS.innerHTML = pastEventsCards;
 
@@ -527,7 +289,7 @@ const getPastEvents = () => {
                     } else {
                         DIV_CARDS_PAST_EVENTS.innerHTML = `<h3 style='text-align:center;color:red;'>No matches found for ' ${searchText} '</h3>`
                         event.preventDefault();
-                        
+
                     }
                 }
 
@@ -565,19 +327,7 @@ const getPastEvents = () => {
 
             if (arrayEventsFiltered.length > 0) {
                 arrayEventsFiltered.forEach(ev => (
-                    pastEventsCards += `
-                                        <div class="col">
-                                            <div class="card">
-                                                <img src="${ev.image}" class="card-img-top" alt="...">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">${ev.name}</h5>
-                                                    <p class="card-text">${ev.description}o</p>      
-                                                    <h6>Price: $ ${ev.price}</h6>
-                                                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                            `))
+                    pastEventsCards += generateCard(ev)))
 
                 DIV_CARDS_PAST_EVENTS.innerHTML = pastEventsCards;
                 event.preventDefault();
@@ -594,19 +344,7 @@ const getPastEvents = () => {
 
             if (arrayEvent.length > 0) {
                 arrayEvent.forEach(ev => (
-                    pastEventsCards += `
-                                        <div class="col">
-                                            <div class="card">
-                                                <img src="${ev.image}" class="card-img-top" alt="...">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">${ev.name}</h5>
-                                                    <p class="card-text">${ev.description}o</p>      
-                                                    <h6>Price: $ ${ev.price}</h6>
-                                                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        `))
+                    pastEventsCards += generateCard(ev)))
 
                 DIV_CARDS_PAST_EVENTS.innerHTML = pastEventsCards;
                 event.preventDefault();
@@ -627,29 +365,21 @@ const getPastEvents = () => {
 //***********************UPCOMING EVENTS*************************************
 
 let futureEventsCards = '';
-const getFutureEvents = () => {
+let futureEventsArray = [];
+const getFutureEvents = async () => {
     let futureEventsCards = '';
     let ar = [];
     let nAr = [];
     let arrayCategoryFilter = [];
-let arrayEventsFiltered = []
-    let futureEventsArray = data.filter(ev => (Date.parse(ev.date) > currentDateFormat))
+    let arrayEventsFiltered = [];
+    let data = await datos();
+    let currentDateFormat = Date.parse(data.currentDate);
+
+    futureEventsArray = data.events.filter(ev => (Date.parse(ev.date) > currentDateFormat))
     futureEventsArray.forEach(
         e => (
-            futureEventsCards +=
-                         `<div class="col">
-                              <div class="card">
-                                  <img src="${e.image}" class="card-img-top" alt="img">
-                                  <div class="card-body">
-                                      <h5 class="card-title">${e.name}</h5>
-                                      <p class="card-text">${e.description}o</p>
-                                      <h6>Price: $ ${e.price}</h6>
-                                      <a href="./details.html" target="_BLANK" onclick="getDetails(${e._id})" class="btn">Ver más</a>
-                                  </div>
-                              </div>
-                         </div>
-                            `
-                            ));
+            futureEventsCards += generateCard(e)
+        ));
     DIV_CARDS_FUTURE_EVENTS.innerHTML = futureEventsCards;
 
     futureEventsCards = '';
@@ -657,7 +387,8 @@ let arrayEventsFiltered = []
     let CHECKBOX_ARRAY = document.querySelectorAll("input[type=checkbox]");
     let acum = 0;
     let check = FLEX_CONTAINER_CHECKBOX.children[0].childNodes;
-//***********************CAPTURANDO EVENTO CHANGE DE CHECKBOX************************************
+
+    //***********************CAPTURANDO EVENTO CHANGE DE CHECKBOX************************************
     FLEX_CONTAINER_CHECKBOX.children[0].addEventListener("change", () => {
         let i = 1;
         let searchFilterByCategory = [];
@@ -668,23 +399,11 @@ let arrayEventsFiltered = []
 
         while (i < check.length) {
             if (check[i].checked) {
-                
-                arrayCategoryFilter = data.filter(ev => (ev.category.toLowerCase() == check[i].name.toLowerCase()));
+
+                arrayCategoryFilter = data.events.filter(ev => (ev.category.toLowerCase() == check[i].name.toLowerCase()));
                 arrayCategoryFilter.forEach(ev =>
-                    futureEventsCards += `
-                                         <div class="col">
-                                            <div class="card">
-                                                <img src="${ev.image}" class="card-img-top" alt="...">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">${ev.name}</h5>
-                                                    <p class="card-text">${ev.description}o</p>      
-                                                    <h6>Price: $ ${ev.price}</h6>
-                                                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
-                                                </div>
-                                            </div>
-                                         </div>
-                                         `)
-                console.log(arrayCategoryFilter)
+                    futureEventsCards += generateCard(ev))
+
                 let k = 0;
                 while (k < arrayCategoryFilter.length) {
 
@@ -711,19 +430,7 @@ let arrayEventsFiltered = []
 
                     if (searchFilterByCategory.length > 0) {
                         searchFilterByCategory.forEach(ev => (
-                            futureEventsCards += `
-                                         <div class="col">
-                                             <div class="card">
-                                                 <img src="${ev.image}" class="card-img-top" alt="...">
-                                                 <div class="card-body">
-                                                     <h5 class="card-title">${ev.name}</h5>
-                                                     <p class="card-text">${ev.description}o</p>      
-                                                     <h6>Price: $ ${ev.price}</h6>
-                                                     <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                            `))
+                            futureEventsCards += generateCard(ev)))
 
                         DIV_CARDS_FUTURE_EVENTS.innerHTML = futureEventsCards;
 
@@ -731,7 +438,7 @@ let arrayEventsFiltered = []
                     } else {
                         DIV_CARDS_FUTURE_EVENTS.innerHTML = `<h3 style='text-align:center;color:red;'>No matches found for ' ${searchText} '</h3>`
                         event.preventDefault();
-                       
+
                     }
                 }
 
@@ -755,12 +462,12 @@ let arrayEventsFiltered = []
 
     });
 
-//***********************BUSQUEDA DE EVENTOS SIN FILTRO POR CATEGORIA*************************************
+    //***********************BUSQUEDA DE EVENTOS SIN FILTRO POR CATEGORIA*************************************
 
     BUTTON_SEARCH_FUTURE.addEventListener("click", (e) => {
         let searchText = INPUT_SEARCH_FUTURE.value.toLowerCase();
         if (!check[1].checked) {
-         arrayEventsFiltered =
+            arrayEventsFiltered =
                 futureEventsArray.filter(
                     card => (card.name.toLowerCase().includes(searchText) || (card.description.toLowerCase().includes(searchText)))
                 )
@@ -769,19 +476,7 @@ let arrayEventsFiltered = []
 
             if (arrayEventsFiltered.length > 0) {
                 arrayEventsFiltered.forEach(ev => (
-                    futureEventsCards += `
-                                            <div class="col">
-                                                <div class="card">
-                                                    <img src="${ev.image}" class="card-img-top" alt="...">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">${ev.name}</h5>
-                                                        <p class="card-text">${ev.description}o</p>      
-                                                        <h6>Price: $ ${ev.price}</h6>
-                                                        <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                                 `))
+                    futureEventsCards += generateCard(ev)))
 
                 DIV_CARDS_FUTURE_EVENTS.innerHTML = futureEventsCards;
                 event.preventDefault();
@@ -798,19 +493,7 @@ let arrayEventsFiltered = []
 
             if (arrayEvent.length > 0) {
                 arrayEvent.forEach(ev => (
-                    futureEventsCards += `
-                                        <div class="col">
-                                            <div class="card">
-                                                <img src="${ev.image}" class="card-img-top" alt="...">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">${ev.name}</h5>
-                                                    <p class="card-text">${ev.description}o</p>      
-                                                    <h6>Price: $ ${ev.price}</h6>
-                                                    <a href="./details.html" target="_blank" onclick="getDetails(${ev._id})" class="btn">Ver más</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        `))
+                    futureEventsCards += generateCard(ev)))
 
                 DIV_CARDS_FUTURE_EVENTS.innerHTML = futureEventsCards;
                 event.preventDefault();
@@ -838,12 +521,15 @@ const getDetails = (e) => {
 
 //-------------------------------------------------------------------------------------
 let eventDetails = '';
-const details = () => {
+const details = async () => {
+
+    let data = await datos();
 
     let params = new URLSearchParams(document.location.search);
     let id = params.get("id");
 
-    let element = data.find(v => v._id == id)
+    let element = data.events.find(v => v._id == id)
+    let currentDateFormat = Date.parse(data.currentDate);
 
     if (Date.parse(element.date) < currentDateFormat) {
         eventDetails = `
@@ -878,6 +564,7 @@ const details = () => {
                                         <p class="card-description">${element.description}</p>
                                         <p class="card-description">Date: <b style="color:#111">${element.date}</b></p>
                                         <p class="card-description">Capacity: <b style="color:#111">${element.capacity}</b></p>
+                                        <p class="card-description">Estimate: <b style="color:#111">${element.estimate}</b></p>
                                         <p class="card-description">Place: <b style="color:#111">${element.place}</b></p>
                                         <p class="card-description">$ <i>${element.price}</i></p>
                                     </div>
@@ -889,5 +576,126 @@ const details = () => {
 
     }
 }
+
+
+
+let porcentajes = [];
+let catFilter =[];
+const addStats = (selector,arr,total,variable,i)=>{
+        k= arr.length;
+        selector.children[i+1].children[0].innerHTML = `<i style="color:#fff;">${arr[i]}</i>`;
+        selector.children[i+1].children[1].innerHTML = `<b style="color:#aaa;">${total}</b>`;
+        selector.children[i+1].children[2].innerHTML = `<b style="color:#aaa;">${variable}` + "% </b>";
+}
+
+const eventsStatistics = async () => {
+
+    let data = await datos();
+
+    data.events.forEach(
+        ev => {
+            if (ev.assistance != undefined) {
+                porcentajes.push("("+adjustPercentage(ev.assistance * 100 / ev.capacity) + "%)" + `  <b style="color:#fff">${ev.name}</b>`);
+            }
+        }
+    )
+
+    porcentajes.sort((a, b) => {
+        if (a == b) {
+            return 0;
+        } if (a > b) {
+            return -1;
+        }
+        return 1;
+    })
+
+    let capacityOrder = data.events.sort((a, b) => {
+        if (a.capacity == b.capacity) {
+            return 0;
+        } if (a.capacity > b.capacity) {
+            return -1;
+        }
+        return 1;
+    })
+
+    const table = document.getElementById('tablePercentage').children[1];
+
+
+    acum = 1;
+    k = porcentajes.length;
+    while (acum < 6) {
+        table.children[acum].children[0].innerHTML = `<i style="color:#aaa;">${porcentajes[acum]}</i>`;
+        table.children[acum].children[1].innerHTML = `<i style="color:#aaa;">${porcentajes[k - acum]}</i>`;
+        table.children[acum].children[2].innerHTML = `<i style="color:#aaa">(${capacityOrder[acum].capacity})</i> <b style="color:#fff">${capacityOrder[acum].name}</b>`;
+
+        acum++;
+    }
+}
+//let catFilter=[];
+
+const futureEventsStatistics = async ()=>{
+    const tableUpcoming = document.getElementById('upcomingTable').children[1]
+    let data = await datos();
+
+    let currentDateFormat = Date.parse(data.currentDate);
+
+    let upcomingEvents = data.events.filter(ev => (Date.parse(ev.date) > currentDateFormat));
+
+    let cat = deleteRepeat(upcomingEvents.map(ev => ev.category));
+    
+    i=0;
+
+  
+
+    total = 0;
+
+    while( i < cat.length){
+
+        catFilter = upcomingEvents.filter(ev=> (ev.category == cat[i]));
+        catFilter.forEach(ev=>{
+          total = ev.estimate * ev.price;
+          estimate = adjustPercentage(ev.estimate * 100 / ev.capacity);
+        })
+
+        addStats(tableUpcoming,cat,total,estimate,i);
+
+        i++;
+    }
+}
+
+const pastEventsStatistics = async ()=>{
+    const tablePast = document.getElementById('pastTableStatistics').children[1]
+    let data = await datos();
+
+    let currentDateFormat = Date.parse(data.currentDate);
+
+    let pastEvents = data.events.filter(ev => (Date.parse(ev.date) < currentDateFormat));
+
+    let cat = deleteRepeat(pastEvents.map(ev => ev.category));
+    
+    i=0;
+
+
+    total = 0;
+
+    while( i < cat.length){
+
+        catFilter = pastEvents.filter(ev=> (ev.category == cat[i]));
+        catFilter.forEach(ev=>{
+          total = ev.assistance * ev.price;
+          estimate = adjustPercentage(ev.assistance * 100 / ev.capacity);
+        })
+        addStats(tablePast,cat,total,estimate,i);
+        i++;
+    }
+}
+//               
+
 //-------------------------------------------------------------------------------------
+const statistics=  ()=>{
+    eventsStatistics();
+    pastEventsStatistics();
+    futureEventsStatistics();
+}
 addCheckBox()
+
